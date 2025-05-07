@@ -1,6 +1,7 @@
 // Import necessary hooks and functions from React.
-import { useContext, useReducer, createContext } from "react";
+import { useContext, useReducer, createContext, useEffect } from "react";
 import storeReducer, { initialStore } from "../store"  // Import the reducer and the initial state.
+import pokeApiServices from "../services/pokeApiService";
 
 // Create a context to hold the global state of the application
 // We will call this global state the "store" to avoid confusion while using local states
@@ -12,6 +13,16 @@ export function StoreProvider({ children }) {
     // Initialize reducer with the initial state.
     const [store, dispatch] = useReducer(storeReducer, initialStore())
     // Provide the store and dispatch method to all child components.
+   
+   //igual a window.onload, solo se ejecutara una sola vez en la vida de la aplicacion
+    useEffect(()=>{
+        pokeApiServices.getAll().then(data=> 
+
+            dispatch({ type: 'load_pokemon', payload: data })
+        )
+    },[])
+
+
     return <StoreContext.Provider value={{ store, dispatch }}>
         {children}
     </StoreContext.Provider>
