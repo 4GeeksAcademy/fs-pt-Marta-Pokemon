@@ -1,12 +1,13 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
-export const PokemonCard = ({ name, url }) => {
+export const ItemCard = ({ name, url }) => {
     const { store, dispatch } = useGlobalReducer();
-    let aux = url.split('/');
-    let id = aux[6];
+let aux = url.split('/');
+let id = aux[aux.length - 2];
+console.log("ItemCard id:", id);
+
 
     const isFavorite = store.favorites.some(fav => fav.data.name === name);
 
@@ -17,22 +18,23 @@ export const PokemonCard = ({ name, url }) => {
         if (isFavorite) {
             dispatch({ type: "REMOVE_FAVORITE", payload: { name, url } });
         } else {
-            dispatch({ type: "ADD_FAVORITE", payload: { data: { name, url }, type: "pokemon" } });
+            dispatch({ type: "ADD_FAVORITE", payload: { data: { name, url }, type: "item" } });
         }
     };
 
     return (
         <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
             <div className="card">
-                <img
-                    className="card-img-top"
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-                    alt={name}
-                />
+               <img
+  className="card-img-top"
+  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${name}.png`}
+  alt={name}
+/>
+
                 <div className="card-body">
                     <h3 className="card-title text-capitalize">{name}</h3>
                     <div className="d-flex justify-content-between align-items-center">
-                        <Link to={`/details/${id}`} className="btn btn-primary">
+                        <Link to={`/details_item/${id}`} className="btn btn-primary">
                             Más info
                         </Link>
                         <button type="button" className="btn btn-outline-danger" onClick={toggleFavorite}>

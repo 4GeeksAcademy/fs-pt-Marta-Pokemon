@@ -1,23 +1,19 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
-export const PokemonCard = ({ name, url }) => {
+export const LocationCard = ({ name, url }) => {
     const { store, dispatch } = useGlobalReducer();
-    let aux = url.split('/');
-    let id = aux[6];
+    let id = url.split("/").filter(Boolean).pop();
 
     const isFavorite = store.favorites.some(fav => fav.data.name === name);
 
     const toggleFavorite = (e) => {
-       e.preventDefault();
-
-
+        e.preventDefault();
         if (isFavorite) {
             dispatch({ type: "REMOVE_FAVORITE", payload: { name, url } });
         } else {
-            dispatch({ type: "ADD_FAVORITE", payload: { data: { name, url }, type: "pokemon" } });
+            dispatch({ type: "ADD_FAVORITE", payload: { data: { name, url }, type: "location" } });
         }
     };
 
@@ -26,13 +22,13 @@ export const PokemonCard = ({ name, url }) => {
             <div className="card">
                 <img
                     className="card-img-top"
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-                    alt={name}
+                    src="https://i.redd.it/4r3ng7kf7z3c1.png"
+                    alt="mapa"
                 />
                 <div className="card-body">
                     <h3 className="card-title text-capitalize">{name}</h3>
                     <div className="d-flex justify-content-between align-items-center">
-                        <Link to={`/details/${id}`} className="btn btn-primary">
+                        <Link to={`/locationDetails/${id}`} className="btn btn-primary">
                             Más info
                         </Link>
                         <button type="button" className="btn btn-outline-danger" onClick={toggleFavorite}>
