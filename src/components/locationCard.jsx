@@ -40,4 +40,3 @@ export const LocationCard = ({ name, url }) => {
         </div>
     );
 };
-
